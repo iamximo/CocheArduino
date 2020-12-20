@@ -1,43 +1,43 @@
 
 #include <SoftwareSerial.h>
 
-//our L298N control pins
+
 const int LeftMotorForward = 11;
 const int LeftMotorBackward = 10;
 const int RightMotorForward = 9;
 const int RightMotorBackward = 8;
 
 
+const int rxBt = 3;
+const int txBt = 2;
+
+
 boolean goesForward = false;
 
-SoftwareSerial BT1(3, 2); // RX | TX
+SoftwareSerial BT1(rxBt, txBt);
 
 void setup(){
-
-  
-    pinMode(8, OUTPUT);       
-    pinMode(9, OUTPUT);        
-    
-    Serial.begin(9600);
-    BT1.begin(9600); 
-
-  
 
   pinMode(RightMotorForward, OUTPUT);
   pinMode(LeftMotorForward, OUTPUT);
   pinMode(LeftMotorBackward, OUTPUT);
-  pinMode(RightMotorBackward, OUTPUT);
+  pinMode(RightMotorBackward, OUTPUT);   
+    
+
+  Serial.begin(9600);
+  BT1.begin(9600); 
+
   
- 
+
 }
 
 void loop(){
+  
 
   if (BT1.available()){
         char leo = BT1.read();
         Serial.write(leo);
         if(leo=='1'){
-          Serial.write("palante");
           moveForward();
         }
         if(leo=='2'){
@@ -64,6 +64,8 @@ void moveStop(){
   digitalWrite(RightMotorBackward, LOW);
   digitalWrite(LeftMotorBackward, LOW);
 }
+
+
 
 void moveForward(){
 
@@ -92,21 +94,24 @@ void moveBackward(){
 }
 
 void turnRight(){
-
+  
   digitalWrite(LeftMotorForward, HIGH);
   digitalWrite(RightMotorBackward, HIGH);
   
   digitalWrite(LeftMotorBackward, LOW);
   digitalWrite(RightMotorForward, LOW);
   
+  
 }
 
 void turnLeft(){
 
-  digitalWrite(LeftMotorBackward, HIGH);
+   digitalWrite(LeftMotorBackward, HIGH);
   digitalWrite(RightMotorForward, HIGH);
   
   digitalWrite(LeftMotorForward, LOW);
   digitalWrite(RightMotorBackward, LOW);
+
+
 
 }
