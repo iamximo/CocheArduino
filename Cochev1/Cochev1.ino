@@ -12,11 +12,12 @@ const int rxBt = 3;
 const int txBt = 2;
 
 
-boolean goesForward = false;
-
+  int conectado;
 SoftwareSerial BT1(rxBt, txBt);
 
 void setup(){
+
+  conectado=0;
 
   pinMode(RightMotorForward, OUTPUT);
   pinMode(LeftMotorForward, OUTPUT);
@@ -32,11 +33,20 @@ void setup(){
 }
 
 void loop(){
-  
 
+ 
   if (BT1.available()){
+       
         char leo = BT1.read();
         Serial.write(leo);
+        if(leo=='s'){
+           turnLeft();
+          delay(100);
+          turnRight();
+          delay(100);
+          moveStop();
+        }
+        
         if(leo=='1'){
           moveForward();
         }
@@ -69,21 +79,17 @@ void moveStop(){
 
 void moveForward(){
 
-  if(!goesForward){
-
-    goesForward=true;
     
     digitalWrite(LeftMotorForward, HIGH);
     digitalWrite(RightMotorForward, HIGH);
   
     digitalWrite(LeftMotorBackward, LOW);
     digitalWrite(RightMotorBackward, LOW); 
-  }
+  
 }
 
 void moveBackward(){
 
-  goesForward=false;
 
   digitalWrite(LeftMotorBackward, HIGH);
   digitalWrite(RightMotorBackward, HIGH);
